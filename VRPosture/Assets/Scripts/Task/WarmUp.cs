@@ -3,26 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class PathController : MonoBehaviour
+public class WarmUp : MonoBehaviour
 {
     [SerializeField] List<Transform> points;
 
     public float distance = 1.5f;
     public float radius = 0.5f;
+    public float timer = 25f;
     public LayerMask layerCollided;
-    public DataCollection dataCollection;
     public GameObject scorePanel;
     public GameObject spheres;
-    public PoorPostureDetection poorPostureDetection;
 
     private int score = 0;
-    //private int i = 0;
+    private float time = 0f;
 
-    Color level1 = new Color(128f/255f, 0f/255f, 38f/255f, 1f);
-    Color level2 = new Color(189f/255f, 0f/255f, 38f/255f, 1f);
-    Color level3 = new Color(227f/255f, 26f/255f, 28f/255f, 1f);
-    Color level4 = new Color(252/255f, 78f/255f, 42f/255f, 1f);
-    Color level5 = new Color(253f/255f, 141f/255f, 60f/255f, 1f);
+    Color level1 = new Color(128f / 255f, 0f / 255f, 38f / 255f, 1f);
+    Color level2 = new Color(189f / 255f, 0f / 255f, 38f / 255f, 1f);
+    Color level3 = new Color(227f / 255f, 26f / 255f, 28f / 255f, 1f);
+    Color level4 = new Color(252 / 255f, 78f / 255f, 42f / 255f, 1f);
+    Color level5 = new Color(253f / 255f, 141f / 255f, 60f / 255f, 1f);
 
     int targetSphere = -1;
 
@@ -35,7 +34,7 @@ public class PathController : MonoBehaviour
         {
             for (int i = 0; i < colors.Count; ++i)
             {
-                colors[i] = new Color(colors[i].r / 255f, colors[i].g / 255f, colors[i].b / 255f, 1f); 
+                colors[i] = new Color(colors[i].r / 255f, colors[i].g / 255f, colors[i].b / 255f, 1f);
                 Debug.Log(colors[i]);
             }
             isNormalized = true;
@@ -87,7 +86,7 @@ public class PathController : MonoBehaviour
         transform.position = Camera.main.transform.position + (-Vector3.forward * distance);
         spheres.SetActive(true);
     }
-    
+
     void PathGeneration()
     {
         if (targetSphere == -1)
@@ -99,14 +98,9 @@ public class PathController : MonoBehaviour
         {
             if (Physics.CheckSphere(points[targetSphere].position, radius, layerCollided))
             {
-                if (dataCollection.startCollectingData == false)
-                {
-                    dataCollection.startCollectingData = true;
-                }
-
                 score += 1;
                 // reset to original sphere state
-                
+
                 points[targetSphere].gameObject.GetComponent<TeleportationAnchor>().enabled = false;
                 targetSphere = -1;
                 spheres.SetActive(false);
@@ -118,14 +112,14 @@ public class PathController : MonoBehaviour
     {
         scorePanel.GetComponent<TMPro.TextMeshProUGUI>().text = score.ToString();
         scorePanel.transform.parent.gameObject.SetActive(true);
-    }   
+    }
 
     void Update()
     {
-        if (!dataCollection.endCollectingData)
+        time += Time.deltaTime;
+        if (time <= timer)
         {
-            if (poorPostureDetection.isTestStarted)
-                PathGeneration();
+            PathGeneration();
         }
         else
         {

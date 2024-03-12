@@ -8,31 +8,29 @@ using UnityEngine.UI;
 
 public class PoorPostureDetection : MonoBehaviour
 {
-    public InputDeviceCharacteristics controllerCharacteristics;
-    public DataCollection dataCollection;
-    //public InputActionReference rightController;
-
+    
     private InputDevice m_targetDevice;
 
     private float m_height;
     private float cameraHeightWorldPosition;
     private float m_minHeight;
     private float m_neck;
+    private float m_neck_up;
     private Quaternion m_centerEyeRotation;
 
     private bool m_isHeightRecorded = false;
     private bool m_isMinHeightRecorded = false;
 
     //public float heightThreshold;
+    public InputDeviceCharacteristics controllerCharacteristics;
+    public DataCollection dataCollection;
     public float upperAngleThreshold;
     public float lowerAngleThreshold;
 
 
     public float holdAndReleaseTime;
 
-    public bool m_isPoorPosture = false;
-
-    public bool interventionTriggered = false;
+    
     
     [SerializeField]
     GameObject angleValue;
@@ -44,10 +42,10 @@ public class PoorPostureDetection : MonoBehaviour
 
     public float poorPostureTimeThreshold = 3f;
     public float heightThreshold = 0.01f;
-    public float heightThresholdLookUp = 0.05f;
     public GameObject heightCalibration;
-    //public GameObject postureInstruction;
-    
+    public bool m_isPoorPosture = false;
+    public bool interventionTriggered = false;
+    public bool isTestStarted = false;
 
     void Start()
     {
@@ -110,11 +108,12 @@ public class PoorPostureDetection : MonoBehaviour
             {
                 StartCoroutine(HoldButtonSlider());
                 m_minHeight = Camera.main.transform.localPosition.y;
-                //m_neck = (m_height - m_minHeight) / (1f - Mathf.Cos(m_centerEyeRotation.eulerAngles.x * Mathf.Deg2Rad));
-                m_neck = (m_height - m_minHeight) / Mathf.Abs(Mathf.Sin(m_centerEyeRotation.eulerAngles.x * Mathf.Deg2Rad));
+                m_neck = (m_height - m_minHeight) / (1f - Mathf.Cos(m_centerEyeRotation.eulerAngles.x * Mathf.Deg2Rad));
+                m_neck_up = (m_height - m_minHeight) / Mathf.Abs(Mathf.Sin(m_centerEyeRotation.eulerAngles.x * Mathf.Deg2Rad));
                 m_isMinHeightRecorded = true;
                 angleValue.SetActive(false);
                 heightCalibration.SetActive(!heightCalibration.activeSelf);
+                isTestStarted = true;
                 //postureInstruction.SetActive(!postureInstruction.activeSelf);
             }
             //dataCollection.startCollectingData = true;
@@ -124,8 +123,8 @@ public class PoorPostureDetection : MonoBehaviour
     float CalculateSafeHeight(float angle)
     {
         float angleRad = angle * Mathf.Deg2Rad;
-        //float safeHeight = m_height - m_neck + m_neck * Mathf.Cos(angleRad);
-        float safeHeight = m_height - m_neck * Mathf.Abs(Mathf.Sin(angleRad));
+        float safeHeight = m_height - m_neck + m_neck * Mathf.Cos(angleRad);
+        //float safeHeight = m_height - m_neck * Mathf.Abs(Mathf.Sin(angleRad));
         return safeHeight;
     }
 
@@ -133,7 +132,7 @@ public class PoorPostureDetection : MonoBehaviour
     {
         float angleRad = angle * Mathf.Deg2Rad;
         // float safeHeight = m_height - m_neck + m_neck * Mathf.Abs(Mathf.Cos(angleRad)) + heightThresholdLookUp;
-        float safeHeight = m_height + m_neck * Mathf.Abs(Mathf.Sin(angleRad));
+        float safeHeight = m_height + m_neck_up * Mathf.Abs(Mathf.Sin(angleRad));
         return safeHeight;
     }
 

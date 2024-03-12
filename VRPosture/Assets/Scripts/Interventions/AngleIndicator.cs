@@ -69,8 +69,8 @@ public class AngleIndicator : MonoBehaviour
     IEnumerator TurnOffIndicator()
     {
         yield return new WaitForSeconds(2f);
-        if (!poorPostureDetection.m_isPoorPosture)
-            correctPosture.SetActive(false);
+        correctPosture.SetActive(false);
+        wrongPosture.SetActive(false);
     }
    
     void Update()
@@ -78,16 +78,20 @@ public class AngleIndicator : MonoBehaviour
         RotateHeadset();
         if (poorPostureDetection.m_isPoorPosture && poorPostureDetection.poorPostureTime > poorPostureDetection.poorPostureTimeThreshold)
         {
-            angleImage.SetActive(true);
+            //angleImage.SetActive(true);
             wrongPosture.SetActive(true);
             correctPosture.SetActive(true);
             Image correct = correctPosture.GetComponent<Image>();
             correct.color = new Color(correct.color.r, correct.color.g, correct.color.b, 0.5f);
+            Image wrong = wrongPosture.GetComponent<Image>();
+            wrong.color = new Color(wrong.color.r, wrong.color.g, wrong.color.b, 1f);
         }
         else
         {
-            angleImage.SetActive(false);
-            wrongPosture.SetActive(false);
+            //angleImage.SetActive(false);
+            //wrongPosture.SetActive(false);
+            Image wrong = wrongPosture.GetComponent<Image>();
+            wrong.color = new Color(wrong.color.r, wrong.color.g, wrong.color.b, 0f);
             Image correct = correctPosture.GetComponent<Image>();
             correct.color = new Color(correct.color.r, correct.color.g, correct.color.b, 1f);
             StartCoroutine(TurnOffIndicator());

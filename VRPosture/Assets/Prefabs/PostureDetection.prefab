@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1740408187476948215
+--- !u!1 &2049445550618032346
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1740408187476948213}
-  - component: {fileID: 1740408187476948214}
+  - component: {fileID: 7513155330366194517}
+  - component: {fileID: 908979241716776151}
   m_Layer: 0
   m_Name: PostureDetection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1740408187476948213
+  m_IsActive: 1
+--- !u!4 &7513155330366194517
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1740408187476948215}
+  m_GameObject: {fileID: 2049445550618032346}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,13 +32,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1740408187476948214
+--- !u!114 &908979241716776151
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1740408187476948215}
+  m_GameObject: {fileID: 2049445550618032346}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a449101b8e3a7604f88e82781bcb02cf, type: 3}
@@ -47,11 +47,14 @@ MonoBehaviour:
   controllerCharacteristics: 576
   dataCollection: {fileID: 0}
   upperAngleThreshold: 15
-  lowerAngleThreshold: 345
+  lowerAngleThreshold: 350
   holdAndReleaseTime: 2
-  m_isPoorPosture: 0
-  interventionTriggered: 0
   angleValue: {fileID: 0}
   slider: {fileID: 0}
   poorPostureTime: 0
-  poorPostureTimeThreshold: 2
+  poorPostureTimeThreshold: 3
+  heightThreshold: 0.015
+  heightCalibration: {fileID: 0}
+  m_isPoorPosture: 0
+  interventionTriggered: 0
+  isTestStarted: 0
